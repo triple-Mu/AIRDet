@@ -14,6 +14,6 @@ class Config(MyConfig):
 
         self.model = airdet_Mobile
 
-        self.model.neck.feature_info = [dict(num_chs=24, reduction=8),
-                                        dict(num_chs=48, reduction=16),
-                                        dict(num_chs=96, reduction=32)]
+        self.model.neck.feature_info = [dict(num_chs=40, reduction=8),
+                                        dict(num_chs=160, reduction=16),
+                                        dict(num_chs=160, reduction=32)]
