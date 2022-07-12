@@ -19,34 +19,39 @@ class MobileNet(nn.Module):
         base_channels = _make_divisible(16 * wid_mul, 8)
 
         # stem
-        self.stem  = conv_3x3_bn(3, base_channels, 2)
+        self.stem  = conv_3x3_bn(3, 16, 2)
 
         # stage 1 [in, hidden, out, k, s, se, hs]
         self.stage1 = nn.Sequential(
-                InvertedResidual(base_channels      , base_channels      , base_channels      , 3, 2, True , False)
+                InvertedResidual(16, 16, 16, 3, 1, False, False),
+                InvertedResidual(16, 64, 24, 3, 2, False, False),
+                InvertedResidual(24, 72, 24, 3, 1, False, False),
         )
 
         # stage 2
         self.stage2 = nn.Sequential(
-                InvertedResidual(base_channels      , int(base_channels * 4.5), int(base_channels * 1.5), 3, 2, False, False),
-                InvertedResidual(int(base_channels * 1.5), int(base_channels * 5.5), int(base_channels * 1.5) , 3, 1, False, False),
+                InvertedResidual(24, 72, 40, 5, 2, True, False),
+                InvertedResidual(40, 120, 40, 5, 1, True, False),
+                InvertedResidual(40, 120, 40, 5, 1, True, False),
         )
 
         # stage 3
         self.stage3 = nn.Sequential(
-                InvertedResidual(int(base_channels * 1.5), int(base_channels * 6)  , int(base_channels * 2.5), 5, 2, True, True),
-                InvertedResidual(int(base_channels * 2.5), int(base_channels * 15) , int(base_channels * 2.5), 5, 1, True, True),
-                InvertedResidual(int(base_channels * 2.5), int(base_channels * 15) , int(base_channels * 2.5), 5, 1, True, True),
-                InvertedResidual(int(base_channels * 2.5), int(base_channels * 7.5), int(base_channels * 3  ), 5, 1, True, True),
-                InvertedResidual(int(base_channels * 3)  , int(base_channels * 9)  , int(base_channels * 3. ), 5, 1, True, True),
+                InvertedResidual(40, 240, 80, 3, 2, False, True),
+                InvertedResidual(80, 200, 80, 3, 1, False, True),
+                InvertedResidual(80, 184, 80, 3, 1, False, True),
+                InvertedResidual(80, 184, 80, 3, 1, False, True),
+
+                InvertedResidual(80, 480, 112, 3, 1, True, True),
+                InvertedResidual(112, 672, 112, 3, 1, True, True),
+                InvertedResidual(112, 672, 160, 5, 1, True, True),
         )
 
         # stage 4
         self.stage4 = nn.Sequential(
-                InvertedResidual(int(base_channels * 3), int(base_channels * 18) , int(base_channels * 6), 5, 2, True, True),
-                InvertedResidual(int(base_channels * 6), int(base_channels * 36) , int(base_channels * 6), 5, 1, True, True),
-                InvertedResidual(int(base_channels * 6), int(base_channels * 36) , int(base_channels * 6), 5, 1, True, True),
-        )
+                InvertedResidual(160, 672, 160, 5, 2, True, True),
+                InvertedResidual(160, 960, 160, 5, 1, True, True),
+        )       
 
 
     def init_weights(self, pretrain=None):
