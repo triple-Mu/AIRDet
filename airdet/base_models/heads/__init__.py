@@ -5,7 +5,7 @@ import copy
 
 from .gfocal_v2_tiny import GFocalHead_Tiny
 from .yolox_head import YOLOXHead
-
+from .end2end import *
 
 def build_head(cfg):
 
