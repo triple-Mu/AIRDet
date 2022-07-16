@@ -529,7 +529,7 @@ class GFocalHead_Tiny(nn.Module):
         dis_preds = self.integral(reg_preds) * mlvl_center_priors[..., 2, None]
         bboxes = distance2bbox(mlvl_center_priors[..., :2], dis_preds)
 
-        bboxes = xyxy2CxCywh(bboxes)
+        bboxes = xyxy2CxCywh(bboxes) if not getattr(self,'end2end',False) else bboxes
         obj = torch.ones_like(cls_preds[..., 0:1])
         res = torch.cat([bboxes, obj, cls_preds[..., 0:self.num_classes]], dim=-1)
 

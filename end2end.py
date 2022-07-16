@@ -48,7 +48,7 @@ def make_parser():
         help="pls input your config file",
     )
     parser.add_argument("-p", "--path", default='./assets/dog.jpg', type=str, help="path to image")
-    parser.add_argument("-c", "--ckpt", default='airdet_s.pth', type=str, help="ckpt for eval")
+    parser.add_argument("-c", "--ckpt", default='./weights/airdet_s_ckpt.pth', type=str, help="ckpt for eval")
     parser.add_argument("--conf", default=None, type=float, help="demo conf")
     parser.add_argument("--nms", default=None, type=float, help="test nms threshold")
     parser.add_argument("--tsize", default=None, type=int, help="test img size")
